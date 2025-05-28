@@ -162,7 +162,7 @@ export interface Member {
   rollNumber: string;
   phoneNumbers?:
     | {
-        number?: string | null;
+        number?: number | null;
         id?: string | null;
       }[]
     | null;
@@ -170,8 +170,42 @@ export interface Member {
   github?: string | null;
   instagram?: string | null;
   profilePic?: (number | null) | Media;
-  role: 'lead' | 'vice lead' | 'executive' | 'leads' | 'ex-leads';
-  domain?: string | null;
+  role:
+    | 'lead'
+    | 'vice-lead'
+    | 'executive'
+    | 'tech-lead'
+    | 'web-dev-lead'
+    | 'ai-ml-lead'
+    | 'app-dev-lead'
+    | 'cloud-lead'
+    | 'cybersecurity-lead'
+    | 'ui-ux-lead'
+    | 'xr-game-dev-lead'
+    | 'broadcasting-lead'
+    | 'content-lead'
+    | 'cr-lead'
+    | 'creative-lead'
+    | 'graphic-design-lead'
+    | 'pr-lead'
+    | 'member';
+  domain?:
+    | (
+        | 'web-dev'
+        | 'ai-ml'
+        | 'app-dev'
+        | 'cloud'
+        | 'cybersecurity'
+        | 'ui-ux'
+        | 'xr-game-dev'
+        | 'broadcasting'
+        | 'content'
+        | 'cr'
+        | 'creative'
+        | 'graphic-design'
+        | 'pr'
+      )
+    | null;
   updatedAt: string;
   createdAt: string;
 }
