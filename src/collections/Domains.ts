@@ -21,7 +21,6 @@ const Domains: CollectionConfig = {
       required: true,
       unique: true,
       admin: {
-        position: "sidebar",
         description: "Short unique identifier (e.g. web, app, aiml). Used internally",
       },
     },
@@ -30,7 +29,6 @@ const Domains: CollectionConfig = {
       type: "number",
       admin: {
         description: "Lower numbers appear first",
-        position: "sidebar",
         step: 1,
       },
       required: false,
