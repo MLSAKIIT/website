@@ -13,6 +13,10 @@ const Domains: CollectionConfig = {
       name: "name",
       type: "text",
       required: true,
+      admin: {
+        description: "The full name of the domain (e.g. Web Development, Artificial Intelligence)",
+        placeholder: "Enter domain name",
+      },
     },
     {
       name: "slug",

@@ -1,4 +1,4 @@
-import { CollectionConfig, Option, OptionObject } from "payload"
+import { CollectionConfig, Option } from "payload"
 
 const memberRoles: Option[] = [
   {
@@ -32,6 +32,7 @@ const Members: CollectionConfig = {
   admin: {
     useAsTitle: "name",
     defaultColumns: ["name", "email", "role", "domain"],
+    description: "Manage all MLSA club members and their roles",
   },
   access: {
     read: () => true,
@@ -45,6 +46,9 @@ const Members: CollectionConfig = {
       name: "name",
       type: "text",
       required: true,
+      admin: {
+        description: "Full name of the member",
+      },
     },
     {
       name: "email",
@@ -55,14 +59,23 @@ const Members: CollectionConfig = {
       name: "rollNumber",
       type: "text",
       required: true,
+      admin: {
+        description: "University roll number of the member",
+      },
     },
     {
       name: "phoneNumbers",
       type: "array",
+      admin: {
+        description: "Contact phone numbers of the member",
+      },
       fields: [
         {
           name: "number",
           type: "text",
+          admin: {
+            description: "Include country code if necessary",
+          },
         },
       ],
     },
@@ -82,6 +95,10 @@ const Members: CollectionConfig = {
       name: "profilePic",
       type: "upload",
       relationTo: "media",
+      admin: {
+        description: "Profile picture of the member",
+        position: "sidebar",
+      },
     },
     {
       name: "role",
@@ -89,6 +106,9 @@ const Members: CollectionConfig = {
       options: memberRoles,
       required: true,
       defaultValue: "member",
+      admin: {
+        description: "Member's role in the MLSA organization",
+      },
     },
     {
       name: "domainLed",
@@ -96,6 +116,10 @@ const Members: CollectionConfig = {
       type: "relationship",
       relationTo: "domains",
       hasMany: false,
+      admin: {
+        description: "If this person is a designated lead of a specific domain, select it here.",
+        condition: (_, siblingData) => siblingData?.role !== "member",
+      },
       validate: (value, { data }) => {
         // @ts-expect-error
         if (data?.role === "domain-lead" && !value) {
@@ -106,6 +130,7 @@ const Members: CollectionConfig = {
     },
     {
       name: "domain",
+      label: "Member of Domains",
       type: "relationship",
       relationTo: "domains",
       hasMany: true,
