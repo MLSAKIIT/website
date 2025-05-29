@@ -154,16 +154,30 @@ export interface Media {
   focalY?: number | null;
 }
 /**
+ * Manage all MLSA club members and their roles
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "members".
  */
 export interface Member {
   id: number;
+  /**
+   * Full name of the member
+   */
   name: string;
   email: string;
+  /**
+   * University roll number of the member
+   */
   rollNumber: string;
+  /**
+   * Contact phone numbers of the member
+   */
   phoneNumbers?:
     | {
+        /**
+         * Include country code if necessary
+         */
         number?: string | null;
         id?: string | null;
       }[]
@@ -171,7 +185,13 @@ export interface Member {
   linkedin?: string | null;
   github?: string | null;
   instagram?: string | null;
+  /**
+   * Profile picture of the member
+   */
   profilePic?: (number | null) | Media;
+  /**
+   * Member's role in the MLSA organization
+   */
   role: 'lead' | 'vice-lead' | 'executive' | 'tech-lead' | 'domain-lead' | 'member';
   /**
    * If this person is a designated lead of a specific domain, select it here.
@@ -190,6 +210,9 @@ export interface Member {
  */
 export interface Domain {
   id: number;
+  /**
+   * The full name of the domain (e.g. Web Development, Artificial Intelligence)
+   */
   name: string;
   /**
    * Short unique identifier (e.g. web, app, aiml). Used internally
