@@ -70,6 +70,7 @@ export interface Config {
     users: User;
     media: Media;
     members: Member;
+    domains: Domain;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -79,6 +80,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     members: MembersSelect<false> | MembersSelect<true>;
+    domains: DomainsSelect<false> | DomainsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -170,8 +172,33 @@ export interface Member {
   github?: string | null;
   instagram?: string | null;
   profilePic?: (number | null) | Media;
-  role: 'lead' | 'vice lead' | 'executive' | 'leads' | 'ex-leads';
-  domain?: string | null;
+  role: 'lead' | 'vice-lead' | 'executive' | 'tech-lead' | 'domain-lead' | 'member';
+  /**
+   * If this person is a designated lead of a specific domain, select it here.
+   */
+  domainLed?: (number | null) | Domain;
+  /**
+   * Domains this member is part of.
+   */
+  domain?: (number | Domain)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "domains".
+ */
+export interface Domain {
+  id: number;
+  name: string;
+  /**
+   * Short unique identifier (e.g. web, app, aiml). Used internally
+   */
+  slug: string;
+  /**
+   * Lower numbers appear first
+   */
+  weight?: number | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -193,6 +220,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'members';
         value: number | Member;
+      } | null)
+    | ({
+        relationTo: 'domains';
+        value: number | Domain;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -288,7 +319,19 @@ export interface MembersSelect<T extends boolean = true> {
   instagram?: T;
   profilePic?: T;
   role?: T;
+  domainLed?: T;
   domain?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "domains_select".
+ */
+export interface DomainsSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  weight?: T;
   updatedAt?: T;
   createdAt?: T;
 }
