@@ -1,15 +1,9 @@
-import * as migration_20250528_180404_initial from './20250528_180404_initial';
-import * as migration_20250528_190335_member_migrations from './20250528_190335_member_migrations';
+import * as migration_20250529_024145_initial from './20250529_024145_initial';
 
 export const migrations = [
   {
-    up: migration_20250528_180404_initial.up,
-    down: migration_20250528_180404_initial.down,
-    name: '20250528_180404_initial',
-  },
-  {
-    up: migration_20250528_190335_member_migrations.up,
-    down: migration_20250528_190335_member_migrations.down,
-    name: '20250528_190335_member_migrations'
+    up: migration_20250529_024145_initial.up,
+    down: migration_20250529_024145_initial.down,
+    name: '20250529_024145_initial'
   },
 ];

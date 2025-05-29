@@ -1,23 +1,5 @@
 import { CollectionConfig, Option, OptionObject } from "payload"
 
-const domains: OptionObject[] = [
-  // TECH
-  { label: "Web Development", value: "web-dev" },
-  { label: "AI / Machine Learning", value: "ai-ml" },
-  { label: "App Development", value: "app-dev" },
-  { label: "Cloud", value: "cloud" },
-  { label: "Cybersecurity", value: "cybersecurity" },
-  { label: "UI/UX", value: "ui-ux" },
-  { label: "XR & Game Development", value: "xr-game-dev" },
-  // NON-TECH
-  { label: "Broadcasting", value: "broadcasting" },
-  { label: "Content", value: "content" },
-  { label: "Corporate Relations", value: "cr" },
-  { label: "Creative", value: "creative" },
-  { label: "Graphic Design", value: "graphic-design" },
-  { label: "Public Relations", value: "pr" },
-] as const
-
 const memberRoles: Option[] = [
   {
     label: "Lead",
@@ -35,12 +17,10 @@ const memberRoles: Option[] = [
     label: "Tech Lead",
     value: "tech-lead",
   },
-
-  ...domains.map((domain) => ({
-    label: `${domain.label} Lead`,
-    value: `${domain.value}-lead`,
-  })),
-
+  {
+    label: "Domain Lead",
+    value: "domain-lead",
+  },
   {
     label: "Member",
     value: "member",
@@ -51,9 +31,14 @@ const Members: CollectionConfig = {
   slug: "members",
   admin: {
     useAsTitle: "name",
+    defaultColumns: ["name", "email", "role", "domain"],
   },
   access: {
     read: () => true,
+    // TODO: change to admin access
+    create: ({ req: { user } }) => Boolean(user),
+    update: ({ req: { user } }) => Boolean(user),
+    delete: ({ req: { user } }) => Boolean(user),
   },
   fields: [
     {
@@ -77,7 +62,7 @@ const Members: CollectionConfig = {
       fields: [
         {
           name: "number",
-          type: "number",
+          type: "text",
         },
       ],
     },
@@ -106,9 +91,26 @@ const Members: CollectionConfig = {
       defaultValue: "member",
     },
     {
+      name: "domainLed",
+      label: "Leads Domain",
+      type: "relationship",
+      relationTo: "domains",
+      hasMany: false,
+      validate: (value, { data }) => {
+        if (data.role === "domain-lead" && !value) {
+          return "If Role is `Domain Lead`, a specific domain must be selected."
+        }
+        return true
+      },
+    },
+    {
       name: "domain",
-      type: "select",
-      options: domains,
+      type: "relationship",
+      relationTo: "domains",
+      hasMany: true,
+      admin: {
+        description: "Domains this member is part of.",
+      },
     },
   ],
 }

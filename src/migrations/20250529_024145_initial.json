@@ -1,5 +1,5 @@
 {
-  "id": "725b6040-09c1-4131-8d7c-06892ff09897",
+  "id": "62700382-6a69-415d-b839-81089a52ba1f",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -404,11 +404,12 @@
           "type": "enum_members_role",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": "'member'"
         },
-        "domain": {
-          "name": "domain",
-          "type": "varchar",
+        "domain_led_id": {
+          "name": "domain_led_id",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false
         },
@@ -433,6 +434,21 @@
           "columns": [
             {
               "expression": "profile_pic_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "members_domain_led_idx": {
+          "name": "members_domain_led_idx",
+          "columns": [
+            {
+              "expression": "domain_led_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -487,8 +503,250 @@
           ],
           "onDelete": "set null",
           "onUpdate": "no action"
+        },
+        "members_domain_led_id_domains_id_fk": {
+          "name": "members_domain_led_id_domains_id_fk",
+          "tableFrom": "members",
+          "tableTo": "domains",
+          "columnsFrom": [
+            "domain_led_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
         }
       },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.members_rels": {
+      "name": "members_rels",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "order": {
+          "name": "order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "parent_id": {
+          "name": "parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "path": {
+          "name": "path",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "domains_id": {
+          "name": "domains_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "members_rels_order_idx": {
+          "name": "members_rels_order_idx",
+          "columns": [
+            {
+              "expression": "order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "members_rels_parent_idx": {
+          "name": "members_rels_parent_idx",
+          "columns": [
+            {
+              "expression": "parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "members_rels_path_idx": {
+          "name": "members_rels_path_idx",
+          "columns": [
+            {
+              "expression": "path",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "members_rels_domains_id_idx": {
+          "name": "members_rels_domains_id_idx",
+          "columns": [
+            {
+              "expression": "domains_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "members_rels_parent_fk": {
+          "name": "members_rels_parent_fk",
+          "tableFrom": "members_rels",
+          "tableTo": "members",
+          "columnsFrom": [
+            "parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "members_rels_domains_fk": {
+          "name": "members_rels_domains_fk",
+          "tableFrom": "members_rels",
+          "tableTo": "domains",
+          "columnsFrom": [
+            "domains_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.domains": {
+      "name": "domains",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "slug": {
+          "name": "slug",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "weight": {
+          "name": "weight",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 99
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "domains_slug_idx": {
+          "name": "domains_slug_idx",
+          "columns": [
+            {
+              "expression": "slug",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "domains_updated_at_idx": {
+          "name": "domains_updated_at_idx",
+          "columns": [
+            {
+              "expression": "updated_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "domains_created_at_idx": {
+          "name": "domains_created_at_idx",
+          "columns": [
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
@@ -625,6 +883,12 @@
           "type": "integer",
           "primaryKey": false,
           "notNull": false
+        },
+        "domains_id": {
+          "name": "domains_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {
@@ -717,6 +981,21 @@
           "concurrently": false,
           "method": "btree",
           "with": {}
+        },
+        "payload_locked_documents_rels_domains_id_idx": {
+          "name": "payload_locked_documents_rels_domains_id_idx",
+          "columns": [
+            {
+              "expression": "domains_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
         }
       },
       "foreignKeys": {
@@ -765,6 +1044,19 @@
           "tableTo": "members",
           "columnsFrom": [
             "members_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "payload_locked_documents_rels_domains_fk": {
+          "name": "payload_locked_documents_rels_domains_fk",
+          "tableFrom": "payload_locked_documents_rels",
+          "tableTo": "domains",
+          "columnsFrom": [
+            "domains_id"
           ],
           "columnsTo": [
             "id"
@@ -1084,10 +1376,11 @@
       "schema": "public",
       "values": [
         "lead",
-        "vice lead",
+        "vice-lead",
         "executive",
-        "leads",
-        "ex-leads"
+        "tech-lead",
+        "domain-lead",
+        "member"
       ]
     }
   },
