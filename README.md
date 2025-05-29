@@ -20,6 +20,10 @@ docker compose up -d
 pnpm dev
 ```
 
-4. Admin dashboard is located at [https://localhost:3000/admin](https://localhost:3000/admin)
+4. Seed your database
 
-5. Go to admin dashboard and create your own user for local development. (will add a seed script later once we have a few collections to work on)
+```sh
+pnpm seed
+```
+
+5. Admin dashboard is located at [https://localhost:3000/admin](https://localhost:3000/admin)
