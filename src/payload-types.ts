@@ -173,6 +173,9 @@ export interface Member {
   instagram?: string | null;
   profilePic?: (number | null) | Media;
   role: 'lead' | 'vice-lead' | 'executive' | 'tech-lead' | 'domain-lead' | 'member';
+  /**
+   * If this person is a designated lead of a specific domain, select it here.
+   */
   domainLed?: (number | null) | Domain;
   /**
    * Domains this member is part of.

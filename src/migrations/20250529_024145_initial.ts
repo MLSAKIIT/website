@@ -1,8 +1,14 @@
-import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-postgres'
+import { MigrateUpArgs, MigrateDownArgs, sql } from "@payloadcms/db-postgres"
 
 export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
-   CREATE TYPE "public"."enum_members_role" AS ENUM('lead', 'vice-lead', 'executive', 'tech-lead', 'domain-lead', 'member');
+    DO $$
+    BEGIN
+        IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'enum_members_role') THEN
+            CREATE TYPE "public"."enum_members_role" AS ENUM('lead', 'vice-lead', 'executive', 'tech-lead', 'domain-lead', 'member');
+        END IF;
+    END$$;
+
   CREATE TABLE IF NOT EXISTS "users" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,

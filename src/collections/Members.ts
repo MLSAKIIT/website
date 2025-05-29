@@ -97,7 +97,8 @@ const Members: CollectionConfig = {
       relationTo: "domains",
       hasMany: false,
       validate: (value, { data }) => {
-        if (data.role === "domain-lead" && !value) {
+        // @ts-expect-error
+        if (data?.role === "domain-lead" && !value) {
           return "If Role is `Domain Lead`, a specific domain must be selected."
         }
         return true
