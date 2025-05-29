@@ -1,6 +1,5 @@
-// storage-adapter-import-placeholder
 import { postgresAdapter } from "@payloadcms/db-postgres"
-import { payloadCloudPlugin } from "@payloadcms/payload-cloud"
+import { s3Storage } from "@payloadcms/storage-s3"
 import { lexicalEditor } from "@payloadcms/richtext-lexical"
 import path from "path"
 import { buildConfig } from "payload"
@@ -14,6 +13,8 @@ import Domains from "./collections/Domains"
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
+
+const isProductionOrR2 = process.env.S3_REGION === "auto" || process.env.NODE_ENV === "production"
 
 export default buildConfig({
   admin: {
@@ -35,7 +36,31 @@ export default buildConfig({
   }),
   sharp,
   plugins: [
-    payloadCloudPlugin(),
-    // storage-adapter-placeholder
+    s3Storage({
+      collections: {
+        media: {
+          prefix: "media",
+          generateFileURL: ({ filename, prefix }) => {
+            // NOTE: Cloudflare R2
+            if (isProductionOrR2) {
+              return `${process.env.S3_PUBLIC_URL_BASE}/${prefix}/${filename}`
+            }
+            // NOTE: Local
+            return `${process.env.S3_PUBLIC_URL_BASE}/${process.env.S3_BUCKET_NAME}/${prefix}/${filename}`
+          },
+        },
+      },
+      clientUploads: true,
+      bucket: process.env.S3_BUCKET_NAME || "",
+      config: {
+        credentials: {
+          accessKeyId: process.env.S3_ACCESS_KEY_ID || "",
+          secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || "",
+        },
+        endpoint: process.env.S3_ENDPOINT || "",
+        region: process.env.S3_REGION,
+        forcePathStyle: !isProductionOrR2, // TRUE for local, FALSE for R2
+      },
+    }),
   ],
 })

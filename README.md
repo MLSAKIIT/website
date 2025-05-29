@@ -8,7 +8,7 @@
 cp .env.example .env
 ```
 
-2. Run postgres container
+2. Run postgres and minio(local s3) container
 
 ```sh
 docker compose up -d
@@ -27,3 +27,8 @@ pnpm seed
 ```
 
 5. Admin dashboard is located at [https://localhost:3000/admin](https://localhost:3000/admin)
+
+6. If you want to access minio dashboard go to [https://localhost:9001](https://localhost:9001)
+   - Login using
+     username: `minioadmin`
+     password: `minioadmin`
