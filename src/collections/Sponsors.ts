@@ -30,15 +30,5 @@ export const Sponsors: CollectionConfig = {
       name: "site",
       type: "text",
     },
-    {
-      name: "width",
-      type: "number",
-      required: true,
-    },
-    {
-      name: "height",
-      type: "number",
-      required: true,
-    },
   ],
 }
