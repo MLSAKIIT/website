@@ -4,7 +4,15 @@ export const Sponsors: CollectionConfig = {
   slug: "sponsors",
   upload: {
     mimeTypes: ["image/*"],
-    adminThumbnail: "image",
+    adminThumbnail: "thumbnail",
+    imageSizes: [
+      {
+        name: "thumbnail",
+        width: 480,
+        height: 320,
+        position: "centre",
+      },
+    ],
   },
   admin: {
     useAsTitle: "name",
