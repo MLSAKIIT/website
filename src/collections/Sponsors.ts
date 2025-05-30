@@ -29,6 +29,9 @@ export const Sponsors: CollectionConfig = {
     {
       name: "site",
       type: "text",
+      admin: {
+        description: "The URL to the sponsor's website",
+      },
     },
   ],
 }
