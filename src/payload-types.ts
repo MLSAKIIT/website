@@ -235,6 +235,9 @@ export interface Domain {
 export interface Sponsor {
   id: number;
   name: string;
+  /**
+   * The URL to the sponsor's website
+   */
   site?: string | null;
   prefix?: string | null;
   updatedAt: string;
@@ -244,10 +247,20 @@ export interface Sponsor {
   filename?: string | null;
   mimeType?: string | null;
   filesize?: number | null;
-  width: number;
-  height: number;
+  width?: number | null;
+  height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+  sizes?: {
+    thumbnail?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -406,6 +419,20 @@ export interface SponsorsSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+  sizes?:
+    | T
+    | {
+        thumbnail?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
