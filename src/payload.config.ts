@@ -8,6 +8,7 @@ import sharp from "sharp"
 
 import { Users } from "./collections/Users"
 import { Media } from "./collections/Media"
+import { Sponsors } from "./collections/Sponsors"
 import Members from "./collections/Members"
 import Domains from "./collections/Domains"
 
@@ -23,7 +24,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Members, Domains],
+  collections: [Users, Media, Members, Domains, Sponsors],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "",
   typescript: {
@@ -46,6 +47,15 @@ export default buildConfig({
               return `${process.env.S3_PUBLIC_URL_BASE}/${prefix}/${filename}`
             }
             // NOTE: Local
+            return `${process.env.S3_PUBLIC_URL_BASE}/${process.env.S3_BUCKET_NAME}/${prefix}/${filename}`
+          },
+        },
+        sponsors: {
+          prefix: "sponsors",
+          generateFileURL: ({ filename, prefix }) => {
+            if (isProductionOrR2) {
+              return `${process.env.S3_PUBLIC_URL_BASE}/${prefix}/${filename}`
+            }
             return `${process.env.S3_PUBLIC_URL_BASE}/${process.env.S3_BUCKET_NAME}/${prefix}/${filename}`
           },
         },
