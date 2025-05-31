@@ -73,6 +73,8 @@ export interface Config {
     domains: Domain;
     sponsors: Sponsor;
     events: Event;
+    yearbook: Yearbook;
+    'yearbook-profiles': YearbookProfile;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -85,6 +87,8 @@ export interface Config {
     domains: DomainsSelect<false> | DomainsSelect<true>;
     sponsors: SponsorsSelect<false> | SponsorsSelect<true>;
     events: EventsSelect<false> | EventsSelect<true>;
+    yearbook: YearbookSelect<false> | YearbookSelect<true>;
+    'yearbook-profiles': YearbookProfilesSelect<false> | YearbookProfilesSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -203,6 +207,10 @@ export interface Member {
    */
   domainLed?: (number | null) | Domain;
   /**
+   * Uncheck if member is inactive (e.g., final year).
+   */
+  isActive?: boolean | null;
+  /**
    * Domains this member is part of.
    */
   domain?: (number | Domain)[] | null;
@@ -318,6 +326,34 @@ export interface Event {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "yearbook".
+ */
+export interface Yearbook {
+  id: number;
+  year: number;
+  profiles: (number | YearbookProfile)[];
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "yearbook-profiles".
+ */
+export interface YearbookProfile {
+  id: number;
+  /**
+   * Select the member this yearbook entry is for. Some fields below will auto-populate if a member is selected. You can then override them if needed.
+   */
+  member?: (number | null) | Member;
+  name: string;
+  yearbookProfilePic: number | Media;
+  role: string;
+  testimonial?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -346,6 +382,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'events';
         value: number | Event;
+      } | null)
+    | ({
+        relationTo: 'yearbook';
+        value: number | Yearbook;
+      } | null)
+    | ({
+        relationTo: 'yearbook-profiles';
+        value: number | YearbookProfile;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -443,6 +487,7 @@ export interface MembersSelect<T extends boolean = true> {
   profilePic?: T;
   role?: T;
   domainLed?: T;
+  isActive?: T;
   domain?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -531,6 +576,29 @@ export interface EventsSelect<T extends boolean = true> {
               filename?: T;
             };
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "yearbook_select".
+ */
+export interface YearbookSelect<T extends boolean = true> {
+  year?: T;
+  profiles?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "yearbook-profiles_select".
+ */
+export interface YearbookProfilesSelect<T extends boolean = true> {
+  member?: T;
+  name?: T;
+  yearbookProfilePic?: T;
+  role?: T;
+  testimonial?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

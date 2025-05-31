@@ -1,6 +1,6 @@
-import { CollectionConfig, Option } from "payload"
+import { CollectionConfig, OptionObject } from "payload"
 
-const memberRoles: Option[] = [
+export const MEMBER_ROLES: OptionObject[] = [
   {
     label: "Lead",
     value: "lead",
@@ -103,7 +103,7 @@ const Members: CollectionConfig = {
     {
       name: "role",
       type: "select",
-      options: memberRoles,
+      options: MEMBER_ROLES,
       required: true,
       defaultValue: "member",
       admin: {
