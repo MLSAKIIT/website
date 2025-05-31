@@ -12,6 +12,8 @@ import { Sponsors } from "./collections/Sponsors"
 import { Events } from "./collections/Events"
 import Members from "./collections/Members"
 import Domains from "./collections/Domains"
+import Yearbooks from "./collections/Yearbooks"
+import YearbookProfiles from "./collections/YearbookProfiles"
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -25,7 +27,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Members, Domains, Sponsors, Events],
+  collections: [Users, Media, Members, Domains, Sponsors, Events, Yearbooks, YearbookProfiles],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "",
   typescript: {
