@@ -280,27 +280,25 @@ export interface Event {
   id: number;
   bgColor: string;
   /**
-   * Enter the Project Name
+   * Enter the event name.
    */
-  projectName: string;
+  name: string;
   /**
-   * Enter date of event
+   * Enter event date
    */
   date: string;
   /**
    * Enter Number of Participants
    */
   numParticipant: number;
-  isButton: boolean;
-  isHero: boolean;
   /**
-   * Add the link to the project.
+   * Registration link.
    */
-  link: string;
+  link?: string | null;
   /**
-   * Add short description of the project
+   * Feature this event at the top of the list.
    */
-  description: string;
+  featured: boolean;
   prefix?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -543,13 +541,11 @@ export interface SponsorsSelect<T extends boolean = true> {
  */
 export interface EventsSelect<T extends boolean = true> {
   bgColor?: T;
-  projectName?: T;
+  name?: T;
   date?: T;
   numParticipant?: T;
-  isButton?: T;
-  isHero?: T;
   link?: T;
-  description?: T;
+  featured?: T;
   prefix?: T;
   updatedAt?: T;
   createdAt?: T;

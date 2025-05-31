@@ -15,7 +15,7 @@ export const Events: CollectionConfig = {
     ],
   },
   admin: {
-    useAsTitle: "projectName",
+    useAsTitle: "name",
   },
   access: {
     read: () => true,
@@ -27,11 +27,11 @@ export const Events: CollectionConfig = {
       required: true,
     },
     {
-      name: "projectName",
+      name: "name",
       type: "text",
       required: true,
       admin: {
-        description: "Enter the Project Name",
+        description: "Enter the event name.",
       },
     },
     {
@@ -39,7 +39,7 @@ export const Events: CollectionConfig = {
       type: "date",
       required: true,
       admin: {
-        description: "Enter date of event",
+        description: "Enter event date",
       },
     },
     {
@@ -51,31 +51,47 @@ export const Events: CollectionConfig = {
       },
     },
     {
-      name: "isButton",
-      type: "checkbox",
-      required: true,
-      defaultValue: false,
-    },
-    {
-      name: "isHero",
-      type: "checkbox",
-      required: true,
-      defaultValue: false,
-    },
-    {
       name: "link",
       type: "text",
-      required: true,
+      required: false,
       admin: {
-        description: "Add the link to the project.",
+        description: "Registration link.",
       },
     },
     {
-      name: "description",
-      type: "text",
+      name: "featured",
+      type: "checkbox",
       required: true,
+      defaultValue: false,
       admin: {
-        description: "Add short description of the project",
+        description: "Feature this event at the top of the list.",
+        position: "sidebar",
+      },
+      hooks: {
+        beforeChange: [
+          async ({ value, req, data, originalDoc }) => {
+            if (value === true) {
+              const payload = req.payload
+              await payload.update({
+                collection: "events",
+                where: {
+                  and: [
+                    {
+                      featured: { equals: true },
+                    },
+                    {
+                      id: { not_equals: originalDoc?.id || data?.id },
+                    },
+                  ],
+                },
+                data: {
+                  featured: false,
+                },
+              })
+            }
+            return value
+          },
+        ],
       },
     },
   ],
