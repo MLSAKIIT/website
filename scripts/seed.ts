@@ -3,7 +3,9 @@ import config from "@payload-config"
 import { faker } from "@faker-js/faker"
 import { Member } from "@/payload-types"
 
+// NOTE: always place newer collections to the top as they depend on other collections
 const collectionsToDeleteInOrder: CollectionSlug[] = [
+  "projects",
   "yearbook",
   "yearbook-profiles",
   "events",
@@ -36,6 +38,7 @@ const NUM_SPONSORS = 5
 const NUM_EVENTS = 5
 const NUM_YEARBOOKS = 2
 const NUM_MEDIA = 5
+const NUM_PROJECTS = 5
 
 const LOCAL_ADMIN = {
   email: "test@test.com",
@@ -93,6 +96,11 @@ async function main() {
     )
   }
 
+  const getRandomMediaId = () => {
+    if (seededMedia.length === 0) return undefined
+    return faker.helpers.arrayElement(seededMedia).id
+  }
+
   payload.logger.info("Seeding domains...")
   const seededDomains = await Promise.all(
     domains.map((domain) =>
@@ -109,11 +117,6 @@ async function main() {
 
   payload.logger.info("Seeding members...")
   const membersToCreate: Array<RequiredDataFromCollectionSlug<"members">> = []
-
-  const getRandomMediaId = () => {
-    if (seededMedia.length === 0) return undefined
-    return faker.helpers.arrayElement(seededMedia).id
-  }
 
   membersToCreate.push(createMember({ role: "lead", profilePic: getRandomMediaId() }))
   membersToCreate.push(createMember({ role: "vice-lead", profilePic: getRandomMediaId() }))
@@ -255,6 +258,23 @@ async function main() {
     )
   }
 
+  payload.logger.info("Seeding projects...")
+  const projectToCreate: Array<RequiredDataFromCollectionSlug<"projects">> = []
+  for (let i = 0; i < NUM_PROJECTS; i++) {
+    const projectCoverImage = getRandomMediaId()
+    if (projectCoverImage) {
+      projectToCreate.push(createProject(projectCoverImage))
+    }
+  }
+  await Promise.all(
+    projectToCreate.map((project) =>
+      payload.create({
+        collection: "projects",
+        data: project,
+      }),
+    ),
+  )
+
   payload.logger.info("Database seeded successfully")
   payload.logger.info("Admin Dashboard Account Details:")
   payload.logger.info(`Email: ${LOCAL_ADMIN.email}`)
@@ -309,7 +329,6 @@ const createSponsor = (): RequiredDataFromCollectionSlug<"sponsors"> => {
   return {
     name: faker.company.name(),
     site: faker.internet.url(),
-
     filename: faker.system.commonFileName("png"),
     mimeType: "image/png",
     filesize: faker.number.int({ min: 1000, max: 5000000 }),
@@ -356,6 +375,15 @@ const createYearbookProfile = (
     yearbookProfilePic: mediaId,
     role: member.role,
     testimonial: faker.lorem.paragraph(),
+  }
+}
+
+const createProject = (mediaId: number): RequiredDataFromCollectionSlug<"projects"> => {
+  return {
+    title: faker.lorem.words(3),
+    techStack: faker.lorem.words(3).split(" "),
+    githubLink: faker.internet.url(),
+    projectCoverImage: mediaId,
   }
 }
 

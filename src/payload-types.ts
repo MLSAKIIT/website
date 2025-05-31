@@ -75,6 +75,7 @@ export interface Config {
     events: Event;
     yearbook: Yearbook;
     'yearbook-profiles': YearbookProfile;
+    projects: Project;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -89,6 +90,7 @@ export interface Config {
     events: EventsSelect<false> | EventsSelect<true>;
     yearbook: YearbookSelect<false> | YearbookSelect<true>;
     'yearbook-profiles': YearbookProfilesSelect<false> | YearbookProfilesSelect<true>;
+    projects: ProjectsSelect<false> | ProjectsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -351,6 +353,24 @@ export interface YearbookProfile {
   createdAt: string;
 }
 /**
+ * Showcase club or member projects.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects".
+ */
+export interface Project {
+  id: number;
+  title: string;
+  /**
+   * Enter technologies one at a time. Press Tab or Enter after each technology to add it to the list.
+   */
+  techStack?: string[] | null;
+  githubLink?: string | null;
+  projectCoverImage: number | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
@@ -388,6 +408,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'yearbook-profiles';
         value: number | YearbookProfile;
+      } | null)
+    | ({
+        relationTo: 'projects';
+        value: number | Project;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -593,6 +617,18 @@ export interface YearbookProfilesSelect<T extends boolean = true> {
   yearbookProfilePic?: T;
   role?: T;
   testimonial?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects_select".
+ */
+export interface ProjectsSelect<T extends boolean = true> {
+  title?: T;
+  techStack?: T;
+  githubLink?: T;
+  projectCoverImage?: T;
   updatedAt?: T;
   createdAt?: T;
 }
