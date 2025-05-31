@@ -201,7 +201,7 @@ export interface Member {
   /**
    * Member's role in the MLSA organization
    */
-  role: 'lead' | 'vice-lead' | 'executive' | 'tech-lead' | 'domain-lead' | 'member';
+  role: 'lead' | 'vice-lead' | 'executive' | 'tech-lead' | 'domain-lead' | 'creative-lead' | 'member';
   /**
    * If this person is a designated lead of a specific domain, select it here.
    */

@@ -27,7 +27,6 @@ const domains = [
   { label: "Broadcasting", slug: "broadcasting", weight: 20 },
   { label: "Content", slug: "content", weight: 21 },
   { label: "Corporate Relations", slug: "cr", weight: 22 },
-  { label: "Creative", slug: "creative", weight: 23 },
   { label: "Graphic Design", slug: "gd", weight: 24 },
   { label: "Public Relations", slug: "pr", weight: 25 },
 ] as const

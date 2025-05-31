@@ -22,6 +22,10 @@ export const MEMBER_ROLES: OptionObject[] = [
     value: "domain-lead",
   },
   {
+    label: "Creative Lead",
+    value: "creative-lead",
+  },
+  {
     label: "Member",
     value: "member",
   },
