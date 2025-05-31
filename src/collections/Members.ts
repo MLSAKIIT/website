@@ -33,6 +33,7 @@ const Members: CollectionConfig = {
     useAsTitle: "name",
     defaultColumns: ["name", "email", "role", "domain"],
     description: "Manage all MLSA club members and their roles",
+    group: "Membership",
   },
   access: {
     read: () => true,
@@ -126,6 +127,16 @@ const Members: CollectionConfig = {
           return "If Role is `Domain Lead`, a specific domain must be selected."
         }
         return true
+      },
+    },
+    {
+      name: "isActive",
+      type: "checkbox",
+      label: "Currently Active Member?",
+      defaultValue: true,
+      admin: {
+        description: "Uncheck if member is inactive (e.g., final year).",
+        position: "sidebar",
       },
     },
     {

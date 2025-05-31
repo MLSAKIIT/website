@@ -4,6 +4,7 @@ const Domains: CollectionConfig = {
   slug: "domains",
   admin: {
     useAsTitle: "name",
+    group: "Membership",
   },
   access: {
     read: () => true,
