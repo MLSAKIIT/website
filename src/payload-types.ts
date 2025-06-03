@@ -98,8 +98,12 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'current-announcement': CurrentAnnouncement;
+  };
+  globalsSelect: {
+    'current-announcement': CurrentAnnouncementSelect<false> | CurrentAnnouncementSelect<true>;
+  };
   locale: null;
   user: User & {
     collection: 'users';
@@ -663,6 +667,32 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "current-announcement".
+ */
+export interface CurrentAnnouncement {
+  id: number;
+  message: string;
+  buttonText?: string | null;
+  buttonLink?: string | null;
+  isActive?: boolean | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "current-announcement_select".
+ */
+export interface CurrentAnnouncementSelect<T extends boolean = true> {
+  message?: T;
+  buttonText?: T;
+  buttonLink?: T;
+  isActive?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
