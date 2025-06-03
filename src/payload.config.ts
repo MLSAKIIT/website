@@ -16,6 +16,8 @@ import Yearbooks from "./collections/Yearbooks"
 import YearbookProfiles from "./collections/YearbookProfiles"
 import Projects from "./collections/Projects"
 
+import CurrentAnnouncement from './globals/current-announcement'
+
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -38,6 +40,9 @@ export default buildConfig({
     Yearbooks,
     YearbookProfiles,
     Projects,
+  ],
+  globals: [
+    CurrentAnnouncement,
   ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "",
